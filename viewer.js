@@ -393,15 +393,13 @@
 	    // inverse y coord
 	    if (Util.mobileCheck()) {
 	        canvas.ontouchcancel = function (e) {
-	            e.preventDefault();
+	            // e.preventDefault();
 	            mouseDown = false;
-	            touchPoint[0] = e.targetTouches[0].pageX;
-	            touchPoint[1] = gl.canvas.height - e.targetTouches[0].pageY;
 	            touchPoint[2] = -1000;
 	            touchPoint[3] = -1000;
 	        };
 	        canvas.ontouchstart = function (e) {
-	            e.preventDefault();
+	            // e.preventDefault();
 	            mouseDown = true;
 	            touchPoint[0] = e.targetTouches[0].pageX;
 	            touchPoint[1] = gl.canvas.height - e.targetTouches[0].pageY;
@@ -409,13 +407,13 @@
 	            touchPoint[3] = gl.canvas.height - e.targetTouches[0].pageY;
 	        };
 	        canvas.ontouchend = function (e) {
-	            e.preventDefault();
+	            // e.preventDefault();
 	            mouseDown = false;
 	            touchPoint[2] = -1000;
 	            touchPoint[3] = -1000;
 	        };
 	        canvas.ontouchmove = function (e) {
-	            e.preventDefault();
+	            // e.preventDefault();
 	            touchPoint[0] = e.targetTouches[0].pageX;
 	            touchPoint[1] = gl.canvas.height - e.targetTouches[0].pageY;
 	        };
