@@ -1,6 +1,7 @@
 body{
     border: 0;
     margin: 0;
+    background-color: #333333;
 }
 canvas{
     width: 288px;
