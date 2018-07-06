@@ -369,7 +369,6 @@
 	var bornIndex = 0;
 	var explosionDirection = 12;
 	var explosionPoint = 64;
-	var isMobile = false;
 	var stats, timer;
 	init();
 	animate();
@@ -411,7 +410,6 @@
 	            touchPoint[0] = e.targetTouches[0].pageX;
 	            touchPoint[1] = gl.canvas.height - e.targetTouches[0].pageY;
 	        };
-	        isMobile = true;
 	        Util.changeCSS('mobile.css', 0);
 	        // if(window.innerHeight > glHeight){
 	        //     ratio = window.innerWidth/ window.innerHeight;
@@ -441,7 +439,6 @@
 	                touchPoint[1] = gl.canvas.height - e.pageY;
 	            }
 	        };
-	        isMobile = false;
 	        WebglUtil.resizeCanvas(gl);
 	    }
 
@@ -461,9 +458,9 @@
 	}
 	function preProcess() {
 	    computeBuffer.setiMouse(touchPoint);
-	    if (isMobile) {
-	        WebglUtil.resizeCanvas(gl);
-	    }
+	    // if(isMobile){
+	    //     WebglUtil.resizeCanvas(gl);
+	    // }
 	}
 	function render() {
 	    computeBuffer.compute();

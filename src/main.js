@@ -106,9 +106,9 @@ function animate() {
 }
 function preProcess(){
     computeBuffer.setiMouse(touchPoint);
-    if(isMobile){
-        WebglUtil.resizeCanvas(gl);
-    }
+    // if(isMobile){
+    //     WebglUtil.resizeCanvas(gl);
+    // }
 }
 function render() {
     computeBuffer.compute();
