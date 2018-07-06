@@ -56,8 +56,6 @@ function init() {
         canvas.ontouchend = (e) =>{
             e.preventDefault();
             mouseDown = false;
-            touchPoint[0] = -1000;
-            touchPoint[1] = -1000;
             touchPoint[2] = -1000;
             touchPoint[3] = -1000;
         }
