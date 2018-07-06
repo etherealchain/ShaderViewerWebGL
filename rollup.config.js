@@ -44,7 +44,7 @@ export default {
 		{
 			format: 'iife',
 			name: 'viewer',
-			file: 'build/viewer.js',
+			file: 'viewer.js',
 			indent: '\t'
 		}
 	]
