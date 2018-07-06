@@ -420,6 +420,8 @@
 	            e.preventDefault();
 	            touchPoint[0] = e.targetTouches[0].pageX;
 	            touchPoint[1] = gl.canvas.height - e.targetTouches[0].pageY;
+	            touchPoint[2] = -1000;
+	            touchPoint[3] = -1000;
 	        };
 	        // Util.changeCSS('mobile.css',0);
 	        // if(window.innerHeight > glHeight){
