@@ -57,13 +57,13 @@ function init() {
         }
         isMobile = true;
         Util.changeCSS('mobile.css',0);
-        if(window.innerHeight > glHeight){
-            ratio = window.innerWidth/ window.innerHeight;
-            WebglUtil.resizeCanvas(gl, ratio*glHeight, glHeight);
-        }
-        else{
+        // if(window.innerHeight > glHeight){
+        //     ratio = window.innerWidth/ window.innerHeight;
+        //     WebglUtil.resizeCanvas(gl, ratio*glHeight, glHeight);
+        // }
+        // else{
             WebglUtil.resizeCanvas(gl);
-        }
+        // }
     }
     else{
         canvas.onmousedown = (e) =>{
