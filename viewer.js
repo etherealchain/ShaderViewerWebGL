@@ -370,7 +370,7 @@
 	var explosionDirection = 12;
 	var explosionPoint = 64;
 	var isMobile = false;
-	var glWidth = 512;
+	var glHeight = 512;
 	var stats, timer;
 	init();
 	animate();
@@ -414,9 +414,9 @@
 	        };
 	        isMobile = true;
 	        Util.changeCSS('mobile.css', 0);
-	        if (window.innerWidth > glWidth) {
+	        if (window.innerHeight > glHeight) {
 	            ratio = window.innerWidth / window.innerHeight;
-	            WebglUtil.resizeCanvas(gl, glWidth, glWidth / ratio);
+	            WebglUtil.resizeCanvas(gl, ratio * glHeight, glHeight);
 	        } else {
 	            WebglUtil.resizeCanvas(gl);
 	        }
