@@ -37,6 +37,14 @@ function init() {
     document.body.appendChild( canvas );
     // inverse y coord
     if(Util.mobileCheck()){
+        canvas.ontouchcancel = (e) =>{
+            e.preventDefault();
+            mouseDown = false;
+            touchPoint[0] = e.targetTouches[0].pageX;
+            touchPoint[1] = gl.canvas.height - e.targetTouches[0].pageY;
+            touchPoint[2] = -1000;
+            touchPoint[3] = -1000;
+        }
         canvas.ontouchstart = (e) => {
             e.preventDefault();
             mouseDown = true;
