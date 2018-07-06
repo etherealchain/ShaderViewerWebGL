@@ -56,7 +56,7 @@ function init() {
             touchPoint[1] = gl.canvas.height - e.targetTouches[0].pageY;
         }
         isMobile = true;
-        Util.changeCSS('mobile.css',0);
+        // Util.changeCSS('mobile.css',0);
         // if(window.innerHeight > glHeight){
         //     ratio = window.innerWidth/ window.innerHeight;
         //     WebglUtil.resizeCanvas(gl, ratio*glHeight, glHeight);

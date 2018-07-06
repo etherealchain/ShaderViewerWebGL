@@ -410,7 +410,7 @@
 	            touchPoint[0] = e.targetTouches[0].pageX;
 	            touchPoint[1] = gl.canvas.height - e.targetTouches[0].pageY;
 	        };
-	        Util.changeCSS('mobile.css', 0);
+	        // Util.changeCSS('mobile.css',0);
 	        // if(window.innerHeight > glHeight){
 	        //     ratio = window.innerWidth/ window.innerHeight;
 	        //     WebglUtil.resizeCanvas(gl, ratio*glHeight, glHeight);
