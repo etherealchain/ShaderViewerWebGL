@@ -97,11 +97,11 @@
 	            return this.createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback);
 	        }
 	    }, {
-	        key: "resizeCanvasToDisplaySize",
-	        value: function resizeCanvasToDisplaySize(gl, multiplier) {
+	        key: "resizeCanvas",
+	        value: function resizeCanvas(gl, width, height, multiplier) {
 	            multiplier = multiplier || 1;
-	            var width = gl.canvas.clientWidth * multiplier | 0;
-	            var height = gl.canvas.clientHeight * multiplier | 0;
+	            width = width || gl.canvas.clientWidth * multiplier | 0;
+	            height = height || gl.canvas.clientHeight * multiplier | 0;
 	            if (gl.canvas.width !== width || gl.canvas.height !== height) {
 	                gl.canvas.width = width;
 	                gl.canvas.height = height;
@@ -370,6 +370,7 @@
 	var explosionDirection = 12;
 	var explosionPoint = 64;
 	var isMobile = false;
+	var glWidth = 512;
 	var stats, timer;
 	init();
 	animate();
@@ -390,6 +391,7 @@
 	    computeBuffer = new ComputeBuffer(gl, explosionDirection, explosionPoint);
 	    timer = new Clock(false);
 
+	    document.body.appendChild(canvas);
 	    // inverse y coord
 	    if (Util.mobileCheck()) {
 	        canvas.ontouchstart = function (e) {
@@ -412,6 +414,12 @@
 	        };
 	        isMobile = true;
 	        Util.changeCSS('mobile.css', 0);
+	        if (window.innerWidth > glWidth) {
+	            ratio = window.innerWidth / window.innerHeight;
+	            WebglUtil.resizeCanvas(gl, glWidth, glWidth / ratio);
+	        } else {
+	            WebglUtil.resizeCanvas(gl);
+	        }
 	    } else {
 	        canvas.onmousedown = function (e) {
 	            mouseDown = true;
@@ -434,9 +442,8 @@
 	            }
 	        };
 	        isMobile = false;
+	        WebglUtil.resizeCanvas(gl);
 	    }
-	    document.body.appendChild(canvas);
-	    WebglUtil.resizeCanvasToDisplaySize(gl);
 
 	    timer.start();
 	    stats = new stats_min();
@@ -445,13 +452,9 @@
 	}
 
 	function animate() {
-	    // console.log("other "+timer.getDelta() + " ms");
 	    preProcess();
-	    // console.log("pre "+timer.getDelta() + " ms");
 	    render();
-	    // console.log("render "+timer.getDelta() + " ms");
 	    postProcess();
-	    // console.log("post "+timer.getDelta() + " ms");
 	    stats.update();
 
 	    requestAnimationFrame(animate);
@@ -459,7 +462,7 @@
 	function preProcess() {
 	    computeBuffer.setiMouse(touchPoint);
 	    if (isMobile) {
-	        WebglUtil.resizeCanvasToDisplaySize(gl);
+	        WebglUtil.resizeCanvas(gl);
 	    }
 	}
 	function render() {

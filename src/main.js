@@ -13,6 +13,7 @@ var bornIndex = 0;
 var explosionDirection = 12;
 var explosionPoint = 64;
 var isMobile = false;
+var glWidth = 512;
 var stats, timer;
 init();
 animate();
@@ -33,6 +34,7 @@ function init() {
     computeBuffer = new ComputeBuffer(gl,explosionDirection, explosionPoint);
     timer = new Clock(false);
 
+    document.body.appendChild( canvas );
     // inverse y coord
     if(Util.mobileCheck()){
         canvas.ontouchstart = (e) => {
@@ -55,6 +57,13 @@ function init() {
         }
         isMobile = true;
         Util.changeCSS('mobile.css',0);
+        if(window.innerWidth > glWidth){
+            ratio = window.innerWidth/ window.innerHeight;
+            WebglUtil.resizeCanvas(gl, glWidth, glWidth/ratio);
+        }
+        else{
+            WebglUtil.resizeCanvas(gl);
+        }
     }
     else{
         canvas.onmousedown = (e) =>{
@@ -63,7 +72,6 @@ function init() {
             touchPoint[1] = gl.canvas.height - e.pageY;
             touchPoint[2] = e.pageX;
             touchPoint[3] = gl.canvas.height - e.pageY;
-            
         }
         canvas.onmouseup = (e)=>{
             mouseDown = false;
@@ -79,9 +87,8 @@ function init() {
             }
         }
         isMobile = false;
+        WebglUtil.resizeCanvas(gl);
     }
-    document.body.appendChild( canvas );
-    WebglUtil.resizeCanvasToDisplaySize(gl);
     
     timer.start();
     stats = new Stats();
@@ -90,13 +97,9 @@ function init() {
 }
 
 function animate() {
-    // console.log("other "+timer.getDelta() + " ms");
     preProcess();
-    // console.log("pre "+timer.getDelta() + " ms");
     render();
-    // console.log("render "+timer.getDelta() + " ms");
     postProcess();
-    // console.log("post "+timer.getDelta() + " ms");
     stats.update();
 
     requestAnimationFrame( animate );
@@ -104,7 +107,7 @@ function animate() {
 function preProcess(){
     computeBuffer.setiMouse(touchPoint);
     if(isMobile){
-        WebglUtil.resizeCanvasToDisplaySize(gl);
+        WebglUtil.resizeCanvas(gl);
     }
 }
 function render() {

@@ -69,10 +69,10 @@ class WebglUtil{
         return this.createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback);
     }
 
-    static resizeCanvasToDisplaySize(gl, multiplier) {
+    static resizeCanvas(gl, width, height, multiplier) {
         multiplier = multiplier || 1;
-        let width  = gl.canvas.clientWidth  * multiplier | 0;
-        let height = gl.canvas.clientHeight * multiplier | 0;
+        width = width || (gl.canvas.clientWidth  * multiplier | 0);
+        height = height || (gl.canvas.clientHeight * multiplier | 0);
         if (gl.canvas.width !== width ||  gl.canvas.height !== height) {
             gl.canvas.width  = width;
             gl.canvas.height = height;
