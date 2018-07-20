@@ -47,10 +47,10 @@ function init() {
         canvas.ontouchstart = (e) => {
             // e.preventDefault();
             mouseDown = true;
-            touchPoint[0] = e.targetTouches[0].pageX;
-            touchPoint[1] = gl.canvas.height - e.targetTouches[0].pageY;
-            touchPoint[2] = e.targetTouches[0].pageX;
-            touchPoint[3] = gl.canvas.height - e.targetTouches[0].pageY;
+            touchPoint[0] = e.targetTouches[0].pageX * glRatio;
+            touchPoint[1] = (gl.canvas.clientHeight - e.targetTouches[0].pageY) * glRatio;
+            touchPoint[2] = e.targetTouches[0].pageX * glRatio;
+            touchPoint[3] = (gl.canvas.clientHeight - e.targetTouches[0].pageY) * glRatio;
         }
         canvas.ontouchend = (e) =>{
             // e.preventDefault();
@@ -60,17 +60,9 @@ function init() {
         }
         canvas.ontouchmove = (e) => {
             // e.preventDefault();
-            touchPoint[0] = e.targetTouches[0].pageX;
-            touchPoint[1] = gl.canvas.height - e.targetTouches[0].pageY;
+            touchPoint[0] = e.targetTouches[0].pageX * glRatio;
+            touchPoint[1] = (gl.canvas.clientHeight - e.targetTouches[0].pageY) * glRatio;
         }
-        // isMobile = true;
-        // Util.changeCSS('mobile.css',0);
-        // if(window.innerHeight > glHeight){
-        //     ratio = window.innerWidth/ window.innerHeight;
-        //     WebglUtil.resizeCanvas(gl, ratio*glHeight, glHeight);
-        // }
-        // else{
-        // }
     }
     else{
         canvas.onmousedown = (e) =>{
