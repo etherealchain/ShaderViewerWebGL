@@ -2,7 +2,6 @@ import WebglUtil from './lib/WebglUtil';
 import ShaderToyRenderer from './ShaderToyRenderer';
 import ComputeBuffer from './ComputeBuffer';
 import Util from './lib/Util';
-import Clock from './Clock';
 import Stats from 'stats.js';
 
 var canvas, gl;
@@ -12,9 +11,7 @@ var touchPoint = [-1000, -1000, -1000, -1000];
 var bornIndex = 0;
 var explosionDirection = 12;
 var explosionPoint = 64;
-var isMobile = false;
-var glHeight= 512;
-var stats, timer;
+var stats;
 init();
 animate();
 
@@ -32,7 +29,6 @@ function init() {
     }
     renderer = new ShaderToyRenderer(gl,explosionDirection, explosionPoint);
     computeBuffer = new ComputeBuffer(gl,explosionDirection, explosionPoint);
-    timer = new Clock(false);
 
     document.body.appendChild( canvas );
     // inverse y coord
@@ -97,7 +93,6 @@ function init() {
         WebglUtil.resizeCanvas(gl);
     }
     
-    timer.start();
     stats = new Stats();
     stats.showPanel(0);
     document.body.appendChild(stats.dom);
