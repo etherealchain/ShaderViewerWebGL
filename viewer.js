@@ -98,16 +98,19 @@
 	        }
 	    }, {
 	        key: "resizeCanvas",
-	        value: function resizeCanvas(gl, width, height, multiplier) {
+	        value: function resizeCanvas(max, currentWidth, currentHeight, gl, width, height, multiplier) {
 	            multiplier = multiplier || 1;
 	            width = width || gl.canvas.clientWidth * multiplier | 0;
 	            height = height || gl.canvas.clientHeight * multiplier | 0;
-	            if (gl.canvas.width !== width || gl.canvas.height !== height) {
-	                gl.canvas.width = width;
-	                gl.canvas.height = height;
-	                return true;
-	            }
-	            return false;
+
+	            if (currentWidth != width || currentHeight != height) {
+	                var ratio = width / height;
+	                var desHeight = Math.sqrt(max / ratio);
+	                var desWidth = desHeight * ratio;
+	                gl.canvas.width = Math.floor(desWidth);
+	                gl.canvas.height = Math.floor(desHeight);
+	                return [width, height, desWidth / width];
+	            } else return [width, height, 0];
 	        }
 	    }]);
 	    return WebglUtil;
@@ -369,7 +372,12 @@
 	var bornIndex = 0;
 	var explosionDirection = 12;
 	var explosionPoint = 64;
-	var stats, timer;
+	var stats;
+	var maxPixels = 16384;
+	var windowWidth = 0;
+	var windowHeight = 0;
+	var glRatio = 0;
+
 	init();
 	animate();
 
@@ -387,7 +395,6 @@
 	    }
 	    renderer = new ShaderToyRenderer(gl, explosionDirection, explosionPoint);
 	    computeBuffer = new ComputeBuffer(gl, explosionDirection, explosionPoint);
-	    timer = new Clock(false);
 
 	    document.body.appendChild(canvas);
 	    // inverse y coord
@@ -417,39 +424,37 @@
 	            touchPoint[0] = e.targetTouches[0].pageX;
 	            touchPoint[1] = gl.canvas.height - e.targetTouches[0].pageY;
 	        };
+	        // isMobile = true;
 	        // Util.changeCSS('mobile.css',0);
 	        // if(window.innerHeight > glHeight){
 	        //     ratio = window.innerWidth/ window.innerHeight;
 	        //     WebglUtil.resizeCanvas(gl, ratio*glHeight, glHeight);
 	        // }
 	        // else{
-	        WebglUtil.resizeCanvas(gl);
 	        // }
 	    } else {
 	        canvas.onmousedown = function (e) {
 	            mouseDown = true;
-	            touchPoint[0] = e.pageX;
-	            touchPoint[1] = gl.canvas.height - e.pageY;
-	            touchPoint[2] = e.pageX;
-	            touchPoint[3] = gl.canvas.height - e.pageY;
+	            touchPoint[0] = e.pageX * glRatio;
+	            touchPoint[1] = (gl.canvas.clientHeight - e.pageY) * glRatio;
+	            touchPoint[2] = e.pageX * glRatio;
+	            touchPoint[3] = (gl.canvas.clientHeight - e.pageY) * glRatio;
 	        };
 	        canvas.onmouseup = function (e) {
 	            mouseDown = false;
-	            touchPoint[0] = e.pageX;
-	            touchPoint[1] = gl.canvas.height - e.pageY;
+	            touchPoint[0] = e.pageX * glRatio;
+	            touchPoint[1] = (gl.canvas.clientHeight - e.pageY) * glRatio;
 	            touchPoint[2] = -1000;
 	            touchPoint[3] = -1000;
 	        };
 	        canvas.onmousemove = function (e) {
 	            if (mouseDown) {
-	                touchPoint[0] = e.pageX;
-	                touchPoint[1] = gl.canvas.height - e.pageY;
+	                touchPoint[0] = e.pageX * glRatio;
+	                touchPoint[1] = (gl.canvas.clientHeight - e.pageY) * glRatio;
 	            }
 	        };
-	        WebglUtil.resizeCanvas(gl);
+	        // isMobile = false;
 	    }
-
-	    timer.start();
 	    stats = new stats_min();
 	    stats.showPanel(0);
 	    document.body.appendChild(stats.dom);
@@ -465,9 +470,10 @@
 	}
 	function preProcess() {
 	    computeBuffer.setiMouse(touchPoint);
-	    // if(isMobile){
-	    //     WebglUtil.resizeCanvas(gl);
-	    // }
+	    var size = WebglUtil.resizeCanvas(maxPixels, windowWidth, windowHeight, gl);
+	    windowWidth = size[0];
+	    windowHeight = size[1];
+	    if (size[2] != 0) glRatio = size[2];
 	}
 	function render() {
 	    computeBuffer.compute();
