@@ -84,8 +84,9 @@ function init() {
                 touchPoint[0] = e.pageX * glRatio;
                 touchPoint[1] = (gl.canvas.clientHeight - e.pageY) * glRatio;
             }
-        }
-        // isMobile = false;
+        }   
+    }
+    window.onresize = () =>{
     }
     stats = new Stats();
     stats.showPanel(0);
