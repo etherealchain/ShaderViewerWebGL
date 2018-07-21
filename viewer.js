@@ -98,19 +98,15 @@
 	        }
 	    }, {
 	        key: "resizeCanvas",
-	        value: function resizeCanvas(max, currentWidth, currentHeight, gl, width, height, multiplier) {
-	            multiplier = multiplier || 1;
-	            width = width || gl.canvas.clientWidth * multiplier | 0;
-	            height = height || gl.canvas.clientHeight * multiplier | 0;
+	        value: function resizeCanvas(max, gl) {
 
-	            if (currentWidth != width || currentHeight != height) {
-	                var ratio = width / height;
-	                var desHeight = Math.sqrt(max / ratio);
-	                var desWidth = desHeight * ratio;
-	                gl.canvas.width = Math.floor(desWidth);
-	                gl.canvas.height = Math.floor(desHeight);
-	                return [width, height, desWidth / width];
-	            } else return [width, height, 0];
+	            var ratio = gl.canvas.clientWidth / gl.canvas.clientHeight;
+	            var desHeight = Math.sqrt(max / ratio);
+	            var desWidth = desHeight * ratio;
+
+	            gl.canvas.width = Math.floor(desWidth);
+	            gl.canvas.height = Math.floor(desHeight);
+	            return desWidth / gl.canvas.clientWidth;
 	        }
 	    }]);
 	    return WebglUtil;
@@ -445,8 +441,8 @@
 	                touchPoint[1] = (gl.canvas.clientHeight - e.pageY) * glRatio;
 	            }
 	        };
-	        // isMobile = false;
 	    }
+
 	    stats = new stats_min();
 	    stats.showPanel(0);
 	    document.body.appendChild(stats.dom);
@@ -462,10 +458,12 @@
 	}
 	function preProcess() {
 	    computeBuffer.setiMouse(touchPoint);
-	    var size = WebglUtil.resizeCanvas(maxPixels, windowWidth, windowHeight, gl);
-	    windowWidth = size[0];
-	    windowHeight = size[1];
-	    if (size[2] != 0) glRatio = size[2];
+	    // if resize
+	    if (windowWidth != gl.canvas.clientWidth || windowHeight != gl.canvas.clientHeight) {
+	        glRatio = WebglUtil.resizeCanvas(maxPixels, gl);
+	        windowWidth = gl.canvas.clientWidth;
+	        windowHeight = gl.canvas.clientHeight;
+	    }
 	}
 	function render() {
 	    computeBuffer.compute();

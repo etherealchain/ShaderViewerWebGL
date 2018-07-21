@@ -69,21 +69,15 @@ class WebglUtil{
         return this.createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback);
     }
 
-    static resizeCanvas(max, currentWidth, currentHeight, gl, width, height, multiplier) {
-        multiplier = multiplier || 1;
-        width = width || (gl.canvas.clientWidth  * multiplier | 0);
-        height = height || (gl.canvas.clientHeight * multiplier | 0);
+    static resizeCanvas(max, gl) {
         
-        if (currentWidth != width || currentHeight != height) {
-            let ratio = width/height;
-            let desHeight = Math.sqrt(max/ratio);
-            let desWidth = desHeight*ratio;
-            gl.canvas.width  = Math.floor(desWidth);
-            gl.canvas.height = Math.floor(desHeight);
-            return [width, height, desWidth/width];
-        }
-        else
-            return [width, height, 0];
+        let ratio = gl.canvas.clientWidth/gl.canvas.clientHeight;
+        let desHeight = Math.sqrt(max/ratio);
+        let desWidth = desHeight*ratio;
+        
+        gl.canvas.width  = Math.floor(desWidth);
+        gl.canvas.height = Math.floor(desHeight);
+        return desWidth/gl.canvas.clientWidth;
     }
 }
 export default WebglUtil;

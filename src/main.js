@@ -86,8 +86,7 @@ function init() {
             }
         }   
     }
-    window.onresize = () =>{
-    }
+
     stats = new Stats();
     stats.showPanel(0);
     document.body.appendChild(stats.dom);
@@ -103,11 +102,12 @@ function animate() {
 }
 function preProcess(){
     computeBuffer.setiMouse(touchPoint);
-    let size =  WebglUtil.resizeCanvas(maxPixels, windowWidth, windowHeight ,gl);
-    windowWidth = size[0];
-    windowHeight = size[1];
-    if(size[2] != 0)
-        glRatio = size[2];
+    // if resize
+    if(windowWidth != gl.canvas.clientWidth || windowHeight != gl.canvas.clientHeight){
+        glRatio = WebglUtil.resizeCanvas(maxPixels,gl);
+        windowWidth = gl.canvas.clientWidth;
+        windowHeight = gl.canvas.clientHeight;
+    }
 }
 function render() {
     computeBuffer.compute();
